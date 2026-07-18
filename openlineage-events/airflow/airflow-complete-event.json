@@ -1,0 +1,770 @@
+{
+  "eventTime": "2026-05-08T19:09:06.384102+00:00",
+  "eventType": "COMPLETE",
+  "inputs": [
+    {
+      "facets": {
+        "schema": {
+          "_producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+          "_schemaURL": "https://openlineage.io/spec/facets/1-2-0/SchemaDatasetFacet.json#/$defs/SchemaDatasetFacet",
+          "fields": [
+            {
+              "fields": [],
+              "name": "disruption_id",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "disruption_type",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "severity",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "severity_rank",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "disruption_description",
+              "type": "text"
+            },
+            {
+              "fields": [],
+              "name": "estimated_delay_mins",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "cost_estimate",
+              "type": "numeric"
+            },
+            {
+              "fields": [],
+              "name": "reported_at",
+              "type": "timestamp"
+            },
+            {
+              "fields": [],
+              "name": "resolved_at",
+              "type": "timestamp"
+            },
+            {
+              "fields": [],
+              "name": "is_unresolved",
+              "type": "bool"
+            },
+            {
+              "fields": [],
+              "name": "is_crew_disruption",
+              "type": "bool"
+            },
+            {
+              "fields": [],
+              "name": "flight_id",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "flight_number",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "origin",
+              "type": "bpchar"
+            },
+            {
+              "fields": [],
+              "name": "destination",
+              "type": "bpchar"
+            },
+            {
+              "fields": [],
+              "name": "scheduled_dep",
+              "type": "timestamp"
+            },
+            {
+              "fields": [],
+              "name": "scheduled_arr",
+              "type": "timestamp"
+            },
+            {
+              "fields": [],
+              "name": "aircraft_type",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "flight_status",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "passenger_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "flight_duration_hrs",
+              "type": "numeric"
+            },
+            {
+              "fields": [],
+              "name": "is_impacted_flight",
+              "type": "bool"
+            },
+            {
+              "fields": [],
+              "name": "crew_id",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "employee_id",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "crew_name",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "crew_role",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "crew_base_airport",
+              "type": "bpchar"
+            },
+            {
+              "fields": [],
+              "name": "crew_status",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "crew_qualifications",
+              "type": "_text"
+            },
+            {
+              "fields": [],
+              "name": "hours_on_duty",
+              "type": "numeric"
+            },
+            {
+              "fields": [],
+              "name": "max_duty_hours",
+              "type": "numeric"
+            },
+            {
+              "fields": [],
+              "name": "crew_hours_remaining",
+              "type": "numeric"
+            },
+            {
+              "fields": [],
+              "name": "crew_is_unavailable",
+              "type": "bool"
+            },
+            {
+              "fields": [],
+              "name": "crew_based_at_origin",
+              "type": "bool"
+            }
+          ]
+        }
+      },
+      "name": "postgres.public.vw_crew_disruption_detail",
+      "namespace": "postgres://172.31.10.79:5432"
+    }
+  ],
+  "job": {
+    "facets": {
+      "documentation": {
+        "_producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-1-0/DocumentationJobFacet.json#/$defs/DocumentationJobFacet",
+        "contentType": "text/plain",
+        "description": "Read unresolved crew disruptions from vw_crew_disruption_detail, classify by risk level and write daily summary to disruption_summary"
+      },
+      "jobType": {
+        "_producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+        "_schemaURL": "https://openlineage.io/spec/facets/2-0-3/JobTypeJobFacet.json#/$defs/JobTypeJobFacet",
+        "integration": "AIRFLOW",
+        "jobType": "TASK",
+        "processingType": "BATCH"
+      },
+      "ownership": {
+        "_producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/OwnershipJobFacet.json#/$defs/OwnershipJobFacet",
+        "owners": [
+          {
+            "name": "airflow"
+          }
+        ]
+      },
+      "sql": {
+        "_producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-1-0/SQLJobFacet.json#/$defs/SQLJobFacet",
+        "query": "ALTER TABLE disruption_summary\n                ADD COLUMN IF NOT EXISTS risk_flag   VARCHAR(10) DEFAULT 'NORMAL',\n                ADD COLUMN IF NOT EXISTS risk_reason TEXT;\nCREATE TEMP TABLE tmp_disruption_staging AS\n            SELECT\n                flight_number,\n                origin,\n                destination,\n                aircraft_type,\n                flight_status,\n                passenger_count,\n                disruption_id,\n                severity,\n                estimated_delay_mins,\n                cost_estimate,\n                crew_id\n            FROM vw_crew_disruption_detail\n            WHERE is_unresolved      = TRUE\n              AND is_crew_disruption = TRUE;\nINSERT INTO disruption_summary (\n                summary_date,\n                flight_number,\n                origin,\n                destination,\n                aircraft_type,\n                flight_status,\n                passenger_count,\n                total_crew_disruptions,\n                critical_count,\n                high_count,\n                medium_count,\n                low_count,\n                total_delay_mins,\n                total_cost_estimate,\n                affected_crew_count,\n                risk_flag,\n                risk_reason,\n                processed_at\n            )\n            WITH aggregated AS (\n\n                SELECT\n                    CURRENT_DATE                                    AS summary_date,\n                    flight_number,\n                    origin,\n                    destination,\n                    aircraft_type,\n                    flight_status,\n\n\n                    MAX(passenger_count)                            AS passenger_count,\n\n                    COUNT(DISTINCT disruption_id)                   AS total_crew_disruptions,\n\n                    COUNT(DISTINCT CASE WHEN severity = 'CRITICAL'\n                          THEN disruption_id END)                   AS critical_count,\n                    COUNT(DISTINCT CASE WHEN severity = 'HIGH'\n                          THEN disruption_id END)                   AS high_count,\n                    COUNT(DISTINCT CASE WHEN severity = 'MEDIUM'\n                          THEN disruption_id END)                   AS medium_count,\n                    COUNT(DISTINCT CASE WHEN severity = 'LOW'\n                          THEN disruption_id END)                   AS low_count,\n\n                    COALESCE(SUM(estimated_delay_mins), 0)          AS total_delay_mins,\n                    COALESCE(SUM(cost_estimate),        0)          AS total_cost_estimate,\n\n                    COUNT(DISTINCT crew_id)                         AS affected_crew_count\n\n                FROM tmp_disruption_staging\n                GROUP BY\n                    flight_number,\n                    origin,\n                    destination,\n                    aircraft_type,\n                    flight_status\n            ),\n            with_risk AS (\n\n                SELECT\n                    a.*,\n                    CASE\n                        WHEN a.critical_count      >  0   THEN 'CRITICAL'\n                        WHEN a.high_count          >  0\n                          OR a.total_delay_mins    >= 240\n                          OR a.affected_crew_count >  1   THEN 'HIGH'\n                        WHEN a.medium_count        >  0\n                          OR a.total_delay_mins    >= 60   THEN 'MEDIUM'\n                        ELSE                                    'NORMAL'\n                    END                                         AS risk_flag,\n                    CASE\n                        WHEN a.critical_count > 0\n                            THEN 'CRITICAL severity crew disruption on flight'\n                        WHEN a.affected_crew_count > 1\n                            THEN 'Multiple crew members disrupted on same flight'\n                        WHEN a.total_delay_mins >= 240\n                            THEN 'Cumulative delay exceeds 4 hours'\n                        WHEN a.high_count > 0\n                            THEN 'HIGH severity crew disruption on flight'\n                        WHEN a.total_delay_mins >= 60\n                            THEN 'Cumulative delay exceeds 1 hour'\n                        ELSE\n                            'Within acceptable disruption thresholds'\n                    END                                         AS risk_reason\n                FROM aggregated a\n            )\n            SELECT\n                summary_date,\n                flight_number,\n                origin,\n                destination,\n                aircraft_type,\n                flight_status,\n                passenger_count,\n                total_crew_disruptions,\n                critical_count,\n                high_count,\n                medium_count,\n                low_count,\n                total_delay_mins,\n                total_cost_estimate,\n                affected_crew_count,\n                risk_flag,\n                risk_reason,\n                NOW()\n            FROM with_risk\n\n            ON CONFLICT (summary_date, flight_number)\n            DO UPDATE SET\n                flight_status          = EXCLUDED.flight_status,\n                total_crew_disruptions = EXCLUDED.total_crew_disruptions,\n                critical_count         = EXCLUDED.critical_count,\n                high_count             = EXCLUDED.high_count,\n                medium_count           = EXCLUDED.medium_count,\n                low_count              = EXCLUDED.low_count,\n                total_delay_mins       = EXCLUDED.total_delay_mins,\n                total_cost_estimate    = EXCLUDED.total_cost_estimate,\n                affected_crew_count    = EXCLUDED.affected_crew_count,\n                risk_flag              = EXCLUDED.risk_flag,\n                risk_reason            = EXCLUDED.risk_reason,\n                processed_at           = NOW()"
+      },
+      "tags": {
+        "_producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/TagsJobFacet.json#/$defs/TagsJobFacet",
+        "tags": [
+          {
+            "key": "airline",
+            "source": "AIRFLOW",
+            "value": "airline"
+          },
+          {
+            "key": "crew",
+            "source": "AIRFLOW",
+            "value": "crew"
+          },
+          {
+            "key": "disruption",
+            "source": "AIRFLOW",
+            "value": "disruption"
+          },
+          {
+            "key": "openlineage",
+            "source": "AIRFLOW",
+            "value": "openlineage"
+          }
+        ]
+      }
+    },
+    "name": "airline_crew_disruption.process_disruption_summary",
+    "namespace": "default"
+  },
+  "outputs": [
+    {
+      "facets": {
+        "columnLineage": {
+          "_producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+          "_schemaURL": "https://openlineage.io/spec/facets/1-2-0/ColumnLineageDatasetFacet.json#/$defs/ColumnLineageDatasetFacet",
+          "fields": {
+            "affected_crew_count": {
+              "inputFields": [
+                {
+                  "field": "affected_crew_count",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "aircraft_type": {
+              "inputFields": [
+                {
+                  "field": "aircraft_type",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "cost_estimate": {
+              "inputFields": [
+                {
+                  "field": "cost_estimate",
+                  "name": "postgres.public.vw_crew_disruption_detail",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "crew_id": {
+              "inputFields": [
+                {
+                  "field": "crew_id",
+                  "name": "postgres.public.vw_crew_disruption_detail",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "critical_count": {
+              "inputFields": [
+                {
+                  "field": "critical_count",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "destination": {
+              "inputFields": [
+                {
+                  "field": "destination",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "disruption_id": {
+              "inputFields": [
+                {
+                  "field": "disruption_id",
+                  "name": "postgres.public.vw_crew_disruption_detail",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "estimated_delay_mins": {
+              "inputFields": [
+                {
+                  "field": "estimated_delay_mins",
+                  "name": "postgres.public.vw_crew_disruption_detail",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "flight_number": {
+              "inputFields": [
+                {
+                  "field": "flight_number",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "flight_status": {
+              "inputFields": [
+                {
+                  "field": "flight_status",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "high_count": {
+              "inputFields": [
+                {
+                  "field": "high_count",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "low_count": {
+              "inputFields": [
+                {
+                  "field": "low_count",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "medium_count": {
+              "inputFields": [
+                {
+                  "field": "medium_count",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "origin": {
+              "inputFields": [
+                {
+                  "field": "origin",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "passenger_count": {
+              "inputFields": [
+                {
+                  "field": "passenger_count",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "risk_flag": {
+              "inputFields": [
+                {
+                  "field": "crew_id",
+                  "name": "postgres.public.tmp_disruption_staging",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                },
+                {
+                  "field": "disruption_id",
+                  "name": "postgres.public.tmp_disruption_staging",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                },
+                {
+                  "field": "estimated_delay_mins",
+                  "name": "postgres.public.tmp_disruption_staging",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                },
+                {
+                  "field": "severity",
+                  "name": "postgres.public.tmp_disruption_staging",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "risk_reason": {
+              "inputFields": [
+                {
+                  "field": "crew_id",
+                  "name": "postgres.public.tmp_disruption_staging",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                },
+                {
+                  "field": "disruption_id",
+                  "name": "postgres.public.tmp_disruption_staging",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                },
+                {
+                  "field": "estimated_delay_mins",
+                  "name": "postgres.public.tmp_disruption_staging",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                },
+                {
+                  "field": "severity",
+                  "name": "postgres.public.tmp_disruption_staging",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "severity": {
+              "inputFields": [
+                {
+                  "field": "severity",
+                  "name": "postgres.public.vw_crew_disruption_detail",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "summary_date": {
+              "inputFields": [
+                {
+                  "field": "summary_date",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "total_cost_estimate": {
+              "inputFields": [
+                {
+                  "field": "total_cost_estimate",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "total_crew_disruptions": {
+              "inputFields": [
+                {
+                  "field": "total_crew_disruptions",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            },
+            "total_delay_mins": {
+              "inputFields": [
+                {
+                  "field": "total_delay_mins",
+                  "name": "postgres.public.with_risk",
+                  "namespace": "postgres://172.31.10.79:5432",
+                  "transformations": []
+                }
+              ],
+              "transformationDescription": "",
+              "transformationType": ""
+            }
+          }
+        },
+        "schema": {
+          "_producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+          "_schemaURL": "https://openlineage.io/spec/facets/1-2-0/SchemaDatasetFacet.json#/$defs/SchemaDatasetFacet",
+          "fields": [
+            {
+              "fields": [],
+              "name": "summary_id",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "summary_date",
+              "type": "date"
+            },
+            {
+              "fields": [],
+              "name": "flight_number",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "origin",
+              "type": "bpchar"
+            },
+            {
+              "fields": [],
+              "name": "destination",
+              "type": "bpchar"
+            },
+            {
+              "fields": [],
+              "name": "aircraft_type",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "flight_status",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "passenger_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "total_crew_disruptions",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "critical_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "high_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "medium_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "low_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "total_delay_mins",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "total_cost_estimate",
+              "type": "numeric"
+            },
+            {
+              "fields": [],
+              "name": "affected_crew_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "processed_at",
+              "type": "timestamp"
+            },
+            {
+              "fields": [],
+              "name": "risk_flag",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "risk_reason",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "name": "postgres.public.disruption_summary",
+      "namespace": "postgres://172.31.10.79:5432"
+    }
+  ],
+  "producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+  "run": {
+    "facets": {
+      "airflow": {
+        "_producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+        "_schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunFacet",
+        "dag": {
+          "dag_id": "airline_crew_disruption",
+          "description": "Read unresolved crew disruptions from vw_crew_disruption_detail, classify by risk level and write daily summary to disruption_summary",
+          "fileloc": "/usr/local/airflow/dags/airline_disruption_dag.py",
+          "owner": "airflow",
+          "owner_links": {},
+          "start_date": "2026-01-01T00:00:00+00:00",
+          "tags": "['openlineage', 'airline', 'crew', 'disruption']",
+          "timetable": {},
+          "timetable_summary": "None"
+        },
+        "dagRun": {
+          "clear_number": 0,
+          "conf": {},
+          "dag_id": "airline_crew_disruption",
+          "data_interval_end": "2026-05-07T23:37:36+00:00",
+          "data_interval_start": "2026-05-07T23:37:36+00:00",
+          "logical_date": "2026-05-07T23:37:36+00:00",
+          "run_after": "2026-05-07T23:37:37.744821+00:00",
+          "run_id": "manual__2026-05-07T23:37:37.744821+00:00",
+          "run_type": "manual",
+          "start_date": "2026-05-07T23:37:38.019678+00:00",
+          "triggering_user_name": "Anonymous"
+        },
+        "task": {
+          "depends_on_past": false,
+          "downstream_task_ids": "[]",
+          "executor_config": {},
+          "ignore_first_depends_on_past": false,
+          "inlets": "[]",
+          "mapped": false,
+          "multiple_outputs": false,
+          "operator_class": "SQLExecuteQueryOperator",
+          "operator_class_path": "airflow.providers.common.sql.operators.sql.SQLExecuteQueryOperator",
+          "operator_provider_version": "1.33.0",
+          "outlets": "[]",
+          "owner": "airflow",
+          "priority_weight": 1,
+          "queue": "default",
+          "retries": 1,
+          "retry_exponential_backoff": false,
+          "task_id": "process_disruption_summary",
+          "trigger_rule": "all_success",
+          "upstream_task_ids": "[]",
+          "wait_for_downstream": false,
+          "wait_for_past_depends_before_skipping": false
+        },
+        "taskInstance": {
+          "dag_bundle_name": "dags-folder",
+          "log_url": "http://localhost:8080/dags/airline_crew_disruption/runs/manual__2026-05-07T23%3A37%3A37.744821%2B00%3A00/tasks/process_disruption_summary?try_number=1",
+          "try_number": 1
+        },
+        "taskUuid": "019e04cd-ca00-7627-9aa4-32b2da6f5d6a"
+      },
+      "nominalTime": {
+        "_producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet",
+        "nominalEndTime": "2026-05-07T23:37:36+00:00",
+        "nominalStartTime": "2026-05-07T23:37:36+00:00"
+      },
+      "parent": {
+        "_producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-1-0/ParentRunFacet.json#/$defs/ParentRunFacet",
+        "job": {
+          "name": "airline_crew_disruption",
+          "namespace": "default"
+        },
+        "root": {
+          "job": {
+            "name": "airline_crew_disruption",
+            "namespace": "default"
+          },
+          "run": {
+            "runId": "9f697d3e-cfb9-436f-9fdb-b24a224027e3"
+          }
+        },
+        "run": {
+          "runId": "9f697d3e-cfb9-436f-9fdb-b24a224027e3"
+        }
+      },
+      "processing_engine": {
+        "_producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-1-1/ProcessingEngineRunFacet.json#/$defs/ProcessingEngineRunFacet",
+        "name": "Airflow",
+        "openlineageAdapterVersion": "2.12.0",
+        "version": "3.1.8+astro.1"
+      },
+      "tags": {
+        "_producer": "https://github.com/apache/airflow/tree/providers-openlineage/2.12.0",
+        "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/TagsRunFacet.json#/$defs/TagsRunFacet",
+        "tags": [
+          {
+            "key": "openlineage_client_version",
+            "source": "OPENLINEAGE_CLIENT",
+            "value": "1.41.0"
+          }
+        ]
+      }
+    },
+    "runId": "46a41bb2-2f7c-4f0b-8548-764f63fcbce2"
+  },
+  "schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunEvent"
+}
