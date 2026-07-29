@@ -1,5 +1,5 @@
 {
-  "eventTime": "2026-05-11T23:15:00.000000+00:00",
+  "eventTime": "2026-07-29T03:17:05.000000+00:00",
   "eventType": "START",
   "inputs": [
     {
@@ -8,23 +8,91 @@
           "_producer": "https://flight-dashboard.example.com",
           "_schemaURL": "https://openlineage.io/spec/facets/1-2-0/SchemaDatasetFacet.json#/$defs/SchemaDatasetFacet",
           "fields": [
-            { "fields": [], "name": "summary_id",             "type": "int4" },
-            { "fields": [], "name": "summary_date",           "type": "date" },
-            { "fields": [], "name": "flight_number",          "type": "varchar" },
-            { "fields": [], "name": "origin",                 "type": "bpchar" },
-            { "fields": [], "name": "destination",            "type": "bpchar" },
-            { "fields": [], "name": "aircraft_type",          "type": "varchar" },
-            { "fields": [], "name": "flight_status",          "type": "varchar" },
-            { "fields": [], "name": "passenger_count",        "type": "int4" },
-            { "fields": [], "name": "total_crew_disruptions", "type": "int4" },
-            { "fields": [], "name": "critical_count",         "type": "int4" },
-            { "fields": [], "name": "high_count",             "type": "int4" },
-            { "fields": [], "name": "medium_count",           "type": "int4" },
-            { "fields": [], "name": "low_count",              "type": "int4" },
-            { "fields": [], "name": "total_delay_mins",       "type": "int4" },
-            { "fields": [], "name": "total_cost_estimate",    "type": "numeric" },
-            { "fields": [], "name": "affected_crew_count",    "type": "int4" },
-            { "fields": [], "name": "processed_at",           "type": "timestamp" }
+            {
+              "fields": [],
+              "name": "summary_id",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "summary_date",
+              "type": "date"
+            },
+            {
+              "fields": [],
+              "name": "flight_number",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "origin",
+              "type": "bpchar"
+            },
+            {
+              "fields": [],
+              "name": "destination",
+              "type": "bpchar"
+            },
+            {
+              "fields": [],
+              "name": "aircraft_type",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "flight_status",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "passenger_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "total_crew_disruptions",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "critical_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "high_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "medium_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "low_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "total_delay_mins",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "total_cost_estimate",
+              "type": "numeric"
+            },
+            {
+              "fields": [],
+              "name": "affected_crew_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "processed_at",
+              "type": "timestamp"
+            }
           ]
         }
       },
@@ -51,7 +119,9 @@
         "_producer": "https://flight-dashboard.example.com",
         "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/OwnershipJobFacet.json#/$defs/OwnershipJobFacet",
         "owners": [
-          { "name": "flight-dashboard" }
+          {
+            "name": "flight-dashboard"
+          }
         ]
       },
       "sql": {
@@ -63,8 +133,16 @@
         "_producer": "https://flight-dashboard.example.com",
         "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/TagsJobFacet.json#/$defs/TagsJobFacet",
         "tags": [
-          { "key": "airline",   "source": "FLIGHT-DASHBOARD", "value": "airline" },
-          { "key": "dashboard", "source": "FLIGHT-DASHBOARD", "value": "dashboard" }
+          {
+            "key": "airline",
+            "source": "FLIGHT-DASHBOARD",
+            "value": "airline"
+          },
+          {
+            "key": "dashboard",
+            "source": "FLIGHT-DASHBOARD",
+            "value": "dashboard"
+          }
         ]
       }
     },
@@ -78,23 +156,91 @@
           "_producer": "https://flight-dashboard.example.com",
           "_schemaURL": "https://openlineage.io/spec/facets/1-2-0/SchemaDatasetFacet.json#/$defs/SchemaDatasetFacet",
           "fields": [
-            { "fields": [], "name": "summary_id",             "type": "int4" },
-            { "fields": [], "name": "summary_date",           "type": "date" },
-            { "fields": [], "name": "flight_number",          "type": "varchar" },
-            { "fields": [], "name": "origin",                 "type": "bpchar" },
-            { "fields": [], "name": "destination",            "type": "bpchar" },
-            { "fields": [], "name": "aircraft_type",          "type": "varchar" },
-            { "fields": [], "name": "flight_status",          "type": "varchar" },
-            { "fields": [], "name": "passenger_count",        "type": "int4" },
-            { "fields": [], "name": "total_crew_disruptions", "type": "int4" },
-            { "fields": [], "name": "critical_count",         "type": "int4" },
-            { "fields": [], "name": "high_count",             "type": "int4" },
-            { "fields": [], "name": "medium_count",           "type": "int4" },
-            { "fields": [], "name": "low_count",              "type": "int4" },
-            { "fields": [], "name": "total_delay_mins",       "type": "int4" },
-            { "fields": [], "name": "total_cost_estimate",    "type": "numeric" },
-            { "fields": [], "name": "affected_crew_count",    "type": "int4" },
-            { "fields": [], "name": "processed_at",           "type": "timestamp" }
+            {
+              "fields": [],
+              "name": "summary_id",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "summary_date",
+              "type": "date"
+            },
+            {
+              "fields": [],
+              "name": "flight_number",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "origin",
+              "type": "bpchar"
+            },
+            {
+              "fields": [],
+              "name": "destination",
+              "type": "bpchar"
+            },
+            {
+              "fields": [],
+              "name": "aircraft_type",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "flight_status",
+              "type": "varchar"
+            },
+            {
+              "fields": [],
+              "name": "passenger_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "total_crew_disruptions",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "critical_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "high_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "medium_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "low_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "total_delay_mins",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "total_cost_estimate",
+              "type": "numeric"
+            },
+            {
+              "fields": [],
+              "name": "affected_crew_count",
+              "type": "int4"
+            },
+            {
+              "fields": [],
+              "name": "processed_at",
+              "type": "timestamp"
+            }
           ]
         }
       },
@@ -108,8 +254,8 @@
       "nominalTime": {
         "_producer": "https://flight-dashboard.example.com",
         "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet",
-        "nominalStartTime": "2026-05-11T23:15:00+00:00",
-        "nominalEndTime": "2026-05-11T23:15:00+00:00"
+        "nominalStartTime": "2026-07-29T03:17:05+00:00",
+        "nominalEndTime": "2026-07-29T03:17:05+00:00"
       },
       "processing_engine": {
         "_producer": "https://flight-dashboard.example.com",
@@ -121,11 +267,15 @@
         "_producer": "https://flight-dashboard.example.com",
         "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/TagsRunFacet.json#/$defs/TagsRunFacet",
         "tags": [
-          { "key": "openlineage_client_version", "source": "FLIGHT-DASHBOARD", "value": "1.0.0" }
+          {
+            "key": "openlineage_client_version",
+            "source": "FLIGHT-DASHBOARD",
+            "value": "1.0.0"
+          }
         ]
       }
     },
-    "runId": "e3c3d4e5-f6a7-8901-bcde-f12345678902"
+    "runId": "30b12403-b27f-4c00-8cbf-0ab582a6ea36"
   },
   "schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunEvent"
 }

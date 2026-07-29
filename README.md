@@ -49,7 +49,7 @@ The lineage info is, of course, also available using the [watsonx.data intellige
 	
 	- A custom OpenLineage Transport provided within the project as [plugins/ibm_iam_transport.py](plugins/ibm_iam_transport.py) which simplifies calling the watsonx.data intelligence lineage endpoint with its dual-header auth scheme.
 	
-
+- [Optional] A local Python3 environment in orderto use the included script that updates the run id and timestamps in the mock-dashboard events. If you don't have a local Python3 environment, instructions are provided to manually edit those files.
 	
 ## References
 
@@ -162,9 +162,55 @@ Within the project, create and run a metadata enrichment for the PostgreSQL data
 
 
 ## Import lineage for the mock dashboard
-This project contains openlineage event files for a mock dashboard that reads the <code>disruption_summary</code> table.  Here are the steps to import those events:
+This project contains openlineage event files for a mock dashboard that reads the <code>disruption_summary</code> table.
 
-- Copy the two files [here](openlineage-events/) to your local machine.
+Before you can import these events into .data intelligence, you must make sure they have:
+
+- A unique run id 
+- Up-to-date timestamps.
+- Database host and port values that match an endpoint in your DSD created earlier 
+
+Here are the steps to edit the event files:
+
+- Clone this project to your local machine.
+
+- Switch to the project's <code>./openlineage-events/mock-dashboard</code> directory in a terminal session.
+
+- If you have a local Python3 environment, make the script <code>refresh-mock-dashboard-events.sh</code> executable:
+
+	<code>$ chmod +x refresh-mock-dashboard-events.sh</code>
+
+- Execute the script:
+
+	<code>$ ./refresh-mock-dashboard-events.sh</code>
+
+- You should see output like this:
+
+```
+	mark@MacBookPro mock-dashboard % ./refresh-mock-dashboard-events.sh
+	runId:    30b12403-b27f-4c00-8cbf-0ab582a6ea36
+	start:    2026-07-29T03:17:05.000000+00:00
+	complete: 2026-07-29T03:17:08.421000+00:00
+	Refreshed: ./dashboard-start-event.json
+	Refreshed: ./dashboard-complete-event.json
+```
+
+- If you do not have a local Python3 environment:
+
+ 	- Edit the <code>dashboard-start-event.json</code> file, search for all occurrences of 
+ <code>2026-07-29T03:17:05</code> and replace all of them with a current timestamp
+ 
+ 	- Edit the <code>dashboard-complete-event.json</code> file,
+search for all occurrences of <code>2026-07-29T03:17:08</code> and replace all of them with a current timestamp that is 3 seconds later than the timestamps in the 
+<code>dashboard-start-event.json</code> file.  
+
+	- Note that the "eventTime" attribute is a long format like <code>2026-07-29T03:17:05.000000+00:00</code> 
+and the "nominalStartTime" and "nominalEndTime" attributes are shorter formats, like <code>"2026-07-29T03:17:05+00:00"</code>.
+
+- Finally, find and edit all occurrences of <code>"postgres://172.31.10.79:5432"</code> in both openlineage event files to refer to the hostname or IP and port number of your postgres instance. 
+Your values should match one of the endpoints in your Postgres DSD.
+
+Once you have completed those edits to the mock-dashboard openlineage events, you can push them to .data intelligences' openlineage endpoint:
 
 
 - Generate an IBM Cloud API key for your account and set it as an environment variable in a terminal session:
@@ -172,6 +218,8 @@ This project contains openlineage event files for a mock dashboard that reads th
 ```
 IBM_CLOUD_API_KEY="<your IBM Cloud Key>"
 ```
+
+
 
 - Generate a bearer token:
 
