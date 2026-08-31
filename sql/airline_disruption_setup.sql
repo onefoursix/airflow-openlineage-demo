@@ -111,6 +111,9 @@ CREATE TABLE crew_members (
     crew_id        SERIAL        PRIMARY KEY,
     employee_id    VARCHAR(10)   NOT NULL UNIQUE,
     full_name      VARCHAR(100)  NOT NULL,
+    email          VARCHAR(100),              -- intentionally dirty for data-quality demos:
+                                              -- two rows have an invalid address (missing '@'
+                                              -- and NULL)
     role           VARCHAR(30)   NOT NULL,    -- CAPTAIN, FIRST_OFFICER, FLIGHT_ATTENDANT
     base_airport   CHAR(3)       NOT NULL,    -- IATA airport code
     status         VARCHAR(20)   NOT NULL DEFAULT 'AVAILABLE',
@@ -122,18 +125,18 @@ CREATE TABLE crew_members (
 );
 
 INSERT INTO crew_members
-    (employee_id, full_name, role, base_airport, status, qualifications, hours_on_duty, max_duty_hours)
+    (employee_id, full_name, email, role, base_airport, status, qualifications, hours_on_duty, max_duty_hours)
 VALUES
-    ('EMP001', 'James Mitchell',  'CAPTAIN',          'ORD', 'AVAILABLE', ARRAY['B737','B757'],  0.0,  12.0),
-    ('EMP002', 'Sarah Chen',      'FIRST_OFFICER',    'ORD', 'AVAILABLE', ARRAY['B737'],         0.0,  12.0),
-    ('EMP003', 'Carlos Rivera',   'CAPTAIN',          'LAX', 'ON_DUTY',   ARRAY['A320','A321'],  6.5,  12.0),
-    ('EMP004', 'Priya Sharma',    'FIRST_OFFICER',    'LAX', 'AVAILABLE', ARRAY['A320'],         0.0,  12.0),
-    ('EMP005', 'Marcus Johnson',  'CAPTAIN',          'JFK', 'SICK',      ARRAY['B777','B737'],  0.0,  12.0),
-    ('EMP006', 'Linda Park',      'FLIGHT_ATTENDANT', 'JFK', 'AVAILABLE', ARRAY['B737','B777'],  0.0,  14.0),
-    ('EMP007', 'Tom Bradley',     'FLIGHT_ATTENDANT', 'ORD', 'AVAILABLE', ARRAY['A320','B737'],  3.0,  14.0),
-    ('EMP008', 'Yuki Tanaka',     'CAPTAIN',          'SFO', 'AVAILABLE', ARRAY['B787','B777'],  0.0,  12.0),
-    ('EMP009', 'Ahmed Hassan',    'FIRST_OFFICER',    'SFO', 'GROUNDED',  ARRAY['B787'],         0.0,  12.0),
-    ('EMP010', 'Rachel O''Brien', 'FLIGHT_ATTENDANT', 'LAX', 'AVAILABLE', ARRAY['A320','A321'],  0.0,  14.0);
+    ('EMP001', 'James Mitchell',  'james.mitchell@united.com',  'CAPTAIN',          'ORD', 'AVAILABLE', ARRAY['B737','B757'],  0.0,  12.0),
+    ('EMP002', 'Sarah Chen',      'sarah.chen@united.com',      'FIRST_OFFICER',    'ORD', 'AVAILABLE', ARRAY['B737'],         0.0,  12.0),
+    ('EMP003', 'Carlos Rivera',   'carlos.rivera@united.com',   'CAPTAIN',          'LAX', 'ON_DUTY',   ARRAY['A320','A321'],  6.5,  12.0),
+    ('EMP004', 'Priya Sharma',    'priya.sharma@united.com',    'FIRST_OFFICER',    'LAX', 'AVAILABLE', ARRAY['A320'],         0.0,  12.0),
+    ('EMP005', 'Marcus Johnson',  'marcus.johnson@united.com',  'CAPTAIN',          'JFK', 'SICK',      ARRAY['B777','B737'],  0.0,  12.0),
+    ('EMP006', 'Linda Park',      'linda.park@united.com',      'FLIGHT_ATTENDANT', 'JFK', 'AVAILABLE', ARRAY['B737','B777'],  0.0,  14.0),
+    ('EMP007', 'Tom Bradley',     'tom.bradleyunited.com',      'FLIGHT_ATTENDANT', 'ORD', 'AVAILABLE', ARRAY['A320','B737'],  3.0,  14.0),
+    ('EMP008', 'Yuki Tanaka',     'yuki.tanaka@united.com',     'CAPTAIN',          'SFO', 'AVAILABLE', ARRAY['B787','B777'],  0.0,  12.0),
+    ('EMP009', 'Ahmed Hassan',    NULL,                         'FIRST_OFFICER',    'SFO', 'GROUNDED',  ARRAY['B787'],         0.0,  12.0),
+    ('EMP010', 'Rachel O''Brien', 'rachel.obrien@united.com',   'FLIGHT_ATTENDANT', 'LAX', 'AVAILABLE', ARRAY['A320','A321'],  0.0,  14.0);
 
 -- Add FK constraint now that crew_members exists
 ALTER TABLE disruption_events
@@ -230,6 +233,7 @@ SELECT
     cm.crew_id,
     cm.employee_id,
     cm.full_name                AS crew_name,
+    cm.email                    AS crew_email,
     cm.role                     AS crew_role,
     cm.base_airport             AS crew_base_airport,
     cm.status                   AS crew_status,
