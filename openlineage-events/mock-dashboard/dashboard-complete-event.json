@@ -1,5 +1,5 @@
 {
-  "eventTime": "2026-07-29T03:17:08.421000+00:00",
+  "eventTime": "2026-09-09T21:05:16.421000+00:00",
   "eventType": "COMPLETE",
   "inputs": [
     {
@@ -97,7 +97,7 @@
         }
       },
       "name": "postgres.public.disruption_summary",
-      "namespace": "postgres://172.31.10.79:5432"
+      "namespace": "postgres://34.208.67.138:5432"
     }
   ],
   "job": {
@@ -161,7 +161,7 @@
                 {
                   "field": "summary_id",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -173,7 +173,7 @@
                 {
                   "field": "summary_date",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -185,7 +185,7 @@
                 {
                   "field": "flight_number",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -197,7 +197,7 @@
                 {
                   "field": "origin",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -209,7 +209,7 @@
                 {
                   "field": "destination",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -221,7 +221,7 @@
                 {
                   "field": "aircraft_type",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -233,7 +233,7 @@
                 {
                   "field": "flight_status",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -245,7 +245,7 @@
                 {
                   "field": "passenger_count",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -257,7 +257,7 @@
                 {
                   "field": "total_crew_disruptions",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -269,7 +269,7 @@
                 {
                   "field": "critical_count",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -281,7 +281,7 @@
                 {
                   "field": "high_count",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -293,7 +293,7 @@
                 {
                   "field": "medium_count",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -305,7 +305,7 @@
                 {
                   "field": "low_count",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -317,7 +317,7 @@
                 {
                   "field": "total_delay_mins",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -329,7 +329,7 @@
                 {
                   "field": "total_cost_estimate",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -341,7 +341,7 @@
                 {
                   "field": "affected_crew_count",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -353,7 +353,7 @@
                 {
                   "field": "processed_at",
                   "name": "postgres.public.disruption_summary",
-                  "namespace": "postgres://172.31.10.79:5432",
+                  "namespace": "postgres://34.208.67.138:5432",
                   "transformations": []
                 }
               ],
@@ -464,8 +464,8 @@
       "nominalTime": {
         "_producer": "https://flight-dashboard.example.com",
         "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet",
-        "nominalStartTime": "2026-07-29T03:17:05+00:00",
-        "nominalEndTime": "2026-07-29T03:17:08+00:00"
+        "nominalStartTime": "2026-09-09T21:05:13+00:00",
+        "nominalEndTime": "2026-09-09T21:05:16+00:00"
       },
       "processing_engine": {
         "_producer": "https://flight-dashboard.example.com",
@@ -485,7 +485,7 @@
         ]
       }
     },
-    "runId": "30b12403-b27f-4c00-8cbf-0ab582a6ea36"
+    "runId": "e9dda943-ea89-4f0f-9e7a-853baca0bb6e"
   },
   "schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunEvent"
 }

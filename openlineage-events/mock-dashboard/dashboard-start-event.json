@@ -1,5 +1,5 @@
 {
-  "eventTime": "2026-07-29T03:17:05.000000+00:00",
+  "eventTime": "2026-09-09T21:05:13.000000+00:00",
   "eventType": "START",
   "inputs": [
     {
@@ -97,7 +97,7 @@
         }
       },
       "name": "postgres.public.disruption_summary",
-      "namespace": "postgres://172.31.10.79:5432"
+      "namespace": "postgres://34.208.67.138:5432"
     }
   ],
   "job": {
@@ -254,8 +254,8 @@
       "nominalTime": {
         "_producer": "https://flight-dashboard.example.com",
         "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet",
-        "nominalStartTime": "2026-07-29T03:17:05+00:00",
-        "nominalEndTime": "2026-07-29T03:17:05+00:00"
+        "nominalStartTime": "2026-09-09T21:05:13+00:00",
+        "nominalEndTime": "2026-09-09T21:05:13+00:00"
       },
       "processing_engine": {
         "_producer": "https://flight-dashboard.example.com",
@@ -275,7 +275,7 @@
         ]
       }
     },
-    "runId": "30b12403-b27f-4c00-8cbf-0ab582a6ea36"
+    "runId": "e9dda943-ea89-4f0f-9e7a-853baca0bb6e"
   },
   "schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunEvent"
 }
