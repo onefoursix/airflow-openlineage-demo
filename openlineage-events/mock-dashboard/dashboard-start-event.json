@@ -1,5 +1,5 @@
 {
-  "eventTime": "2026-09-09T21:05:13.000000+00:00",
+  "eventTime": "2026-10-06T16:17:59.000000+00:00",
   "eventType": "START",
   "inputs": [
     {
@@ -254,8 +254,8 @@
       "nominalTime": {
         "_producer": "https://flight-dashboard.example.com",
         "_schemaURL": "https://openlineage.io/spec/facets/1-0-1/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet",
-        "nominalStartTime": "2026-09-09T21:05:13+00:00",
-        "nominalEndTime": "2026-09-09T21:05:13+00:00"
+        "nominalStartTime": "2026-10-06T16:17:59+00:00",
+        "nominalEndTime": "2026-10-06T16:17:59+00:00"
       },
       "processing_engine": {
         "_producer": "https://flight-dashboard.example.com",
@@ -275,7 +275,7 @@
         ]
       }
     },
-    "runId": "e9dda943-ea89-4f0f-9e7a-853baca0bb6e"
+    "runId": "ae058f5c-152f-486c-8826-df6f9f738c31"
   },
   "schemaURL": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunEvent"
 }
